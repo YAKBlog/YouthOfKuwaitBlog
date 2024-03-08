@@ -102,19 +102,19 @@ const mutations = new graphql_1.GraphQLObjectType({
                 title: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
                 content: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
                 date: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
-                user: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
+                //user: { type: (GraphQLID) },
+                images: { type: (0, graphql_1.GraphQLList)(graphql_1.GraphQLString) },
             },
-            async resolve(parent, { title, content, date, user }) {
+            async resolve(parent, { title, content, date, images }) {
                 let blog;
                 const session = await (0, mongoose_1.startSession)();
                 try {
                     session.startTransaction({ session });
-                    blog = new Blog_1.default({ title, content, date, user });
-                    const existingUser = await User_1.default.findById(user);
-                    if (!existingUser)
-                        return new Error("User Not Found");
-                    existingUser.blogs.push(blog);
-                    await existingUser.save({ session });
+                    blog = new Blog_1.default({ title, content, date, images });
+                    /*const existingUser = await User.findById(user);
+                    if(!existingUser) return new Error("User Not Found");*/
+                    //existingUser.blogs.push(blog);
+                    //await existingUser.save({ session });
                     return await blog.save({ session });
                 }
                 catch (err) {
@@ -131,8 +131,9 @@ const mutations = new graphql_1.GraphQLObjectType({
                 id: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLID) },
                 title: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
                 content: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
+                images: { type: (0, graphql_1.GraphQLList)(graphql_1.GraphQLString) },
             },
-            async resolve(parent, { id, title, content }) {
+            async resolve(parent, { id, title, content, images }) {
                 let existingBlog;
                 try {
                     existingBlog = await Blog_1.default.findById(id);
@@ -141,6 +142,7 @@ const mutations = new graphql_1.GraphQLObjectType({
                     return await Blog_1.default.findByIdAndUpdate(id, {
                         title,
                         content,
+                        images,
                     }, { new: true });
                 }
                 catch (err) {

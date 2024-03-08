@@ -36,12 +36,13 @@ exports.BlogType = new graphql_1.GraphQLObjectType({
         title: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         content: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
         date: { type: (0, graphql_1.GraphQLNonNull)(graphql_1.GraphQLString) },
-        user: {
-            type: exports.UserType,
+        images: { type: (0, graphql_1.GraphQLList)(graphql_1.GraphQLString) },
+        /*user: {
+            type: UserType,
             async resolve(parent) {
-                return await User_1.default.findById(parent.user);
+                return await User.findById(parent.user);
             },
-        },
+        },*/
         comments: {
             type: (0, graphql_1.GraphQLList)(exports.CommentType),
             async resolve(parent) {

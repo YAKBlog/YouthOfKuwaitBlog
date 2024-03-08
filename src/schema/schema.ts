@@ -34,12 +34,13 @@ export const BlogType = new GraphQLObjectType({
         title:{ type: GraphQLNonNull(GraphQLString) },
         content:{ type: GraphQLNonNull(GraphQLString) },
         date:{ type: GraphQLNonNull(GraphQLString) },
-        user: {
+        images: { type: GraphQLList(GraphQLString) },
+        /*user: {
             type: UserType,
             async resolve(parent) {
                 return await User.findById(parent.user);
             },
-        },
+        },*/
         comments: {
             type: GraphQLList(CommentType),
             async resolve(parent) {

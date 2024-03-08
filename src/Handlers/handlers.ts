@@ -99,18 +99,19 @@ const mutations = new GraphQLObjectType({
                 title: { type: GraphQLNonNull(GraphQLString) },
                 content: { type: GraphQLNonNull(GraphQLString) },
                 date: { type: GraphQLNonNull(GraphQLString) },
-                user: { type:GraphQLNonNull(GraphQLID) },
+                //user: { type: (GraphQLID) },
+                images: { type: GraphQLList(GraphQLString) },
             },
-            async resolve(parent, { title, content ,date, user }) {
+            async resolve(parent, { title, content ,date, images }) {
                 let blog: DocumentType;
                 const session = await startSession();
                 try { 
                     session.startTransaction({ session });
-                    blog = new Blog({ title, content, date, user });
-                    const existingUser = await User.findById(user);
-                    if(!existingUser) return new Error("User Not Found");
-                    existingUser.blogs.push(blog);
-                    await existingUser.save({ session });
+                    blog = new Blog({ title, content, date, images });
+                    /*const existingUser = await User.findById(user);
+                    if(!existingUser) return new Error("User Not Found");*/
+                    //existingUser.blogs.push(blog);
+                    //await existingUser.save({ session });
                     return await blog.save({ session });
                  } catch (err){
                     return new Error(err);
@@ -125,8 +126,9 @@ const mutations = new GraphQLObjectType({
                 id: { type: GraphQLNonNull(GraphQLID) },
                 title: { type: GraphQLNonNull(GraphQLString) },
                 content: { type: GraphQLNonNull(GraphQLString) },
+                images: { type: GraphQLList(GraphQLString) },
             },
-            async resolve(parent, {id,title,content}) {
+            async resolve(parent, {id,title,content,images}) {
                 let existingBlog : DocumentType;
                 try {
                     existingBlog = await Blog.findById(id);
@@ -134,6 +136,7 @@ const mutations = new GraphQLObjectType({
                     return await Blog.findByIdAndUpdate(id,{
                         title,
                         content,
+                        images,
                     },{ new: true });
                 } catch (err) {
                     return new Error(err);

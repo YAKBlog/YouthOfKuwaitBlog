@@ -13,6 +13,7 @@ const blogSchema:Schema = new Schema({
         type: Date,
         required: true, 
     },
+    images: [{ type: String }],
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
