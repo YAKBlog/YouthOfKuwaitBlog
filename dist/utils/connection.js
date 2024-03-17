@@ -4,7 +4,7 @@ exports.connectToDatabase = void 0;
 const mongoose_1 = require("mongoose");
 const connectToDatabase = async () => {
     try {
-        await (0, mongoose_1.connect)(`mongodb+srv://kya2009ku:${process.env.MONGODB_PASSWORD}@clusterb.mzvqb1o.mongodb.net/?retryWrites=true&w=majority`);
+        await (0, mongoose_1.connect)(`mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@clusterb.mzvqb1o.mongodb.net/?retryWrites=true&w=majority`);
     }
     catch (err) {
         console.log(err);
